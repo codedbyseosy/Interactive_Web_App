@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Interactive Dictionary App</title>
+        <link rel="stylesheet" href="static/style.css">
+    </head>
+    <body style="background-color: mistyrose;">
+        <h1 style="text-align: center;">Interactive Dictionary Web App</h1>
+        <p style="font-size: 20px; text-align: center;">Search for any word and find its definition,
+            synonyms, and antonyms, as well as examples of
+            how to use them for more than 275,000 words.
+        </p>
+
+        <form>
+            <div>
+                <label for="search_box" style="color: palevioletred; font-size: 25px; font-weight: bold; text-shadow: 1px 1px hotpink;">Enter word:</label>
+                <input type="search" id="search_box" placeholder="Enter word" name="input_word"><br>
+                <div id="button_groups" style="display: flex;  width: 100%; flex-wrap: wrap;">
+                    <button class="edit_button">Get definition</button>
+                    <button class="edit_button">Get synonyms</button>
+                    <button class="edit_button">Get antonyms</button>
+                    <button class="edit_button">Get pronunciation</button>
+                    <button class="edit_button">Provide examples</button>
+
+                </div>
+
+            </div>
+
+        </form>
+    </body>
+</html>

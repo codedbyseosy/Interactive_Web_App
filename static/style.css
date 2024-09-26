@@ -9,12 +9,14 @@ input[type="search"]{
   }
   
   form {
-      border: 2px groove;
+      background-color: white;
+      border-radius: 20px;
       width: 30%;
       height: 300px;
       margin: 0 auto;
       padding: 100px;
       justify-content: center;
+      box-shadow: 10px 10px 50px lightpink;
   }
 
 input[type="submit"]{
@@ -30,10 +32,10 @@ input[type="submit"]{
     border: 10px groove deeppink;
     border-radius: 40px;
     width: 30%;
-    height: 50px;
+    height: auto;
     border: none;
     color: white;
-    padding: 10px;
+    padding: 1rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -50,6 +52,8 @@ input[type="submit"]{
   }  
 
   #button_groups {
-     justify-content: center;
-
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
   }

@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, render_template, request
-import requests
+import requests, re
 
 app = Flask(__name__)
 
@@ -107,12 +107,6 @@ def home():
                            pronunciation=pronunciation, examples=examples, etymology=etymology)
 
 
-def show_etymology(data, etymology):
-    et = data[0]['et'][0][1]
-    date = data[0]['date']
-    etymology = et, date
-    return etymology
-
 
 def get_definition(data, definition, input_word):
     definitions = data[0].get('shortdef', [f'No definition for the word {input_word}.'])
@@ -132,8 +126,8 @@ def get_synonyms(data, input_word, synonyms):
     synonyms_list = data[0]['def'][0]['sseq'][0][0][1].get('syn_list',
                                                            [f'No synonyms for the word {input_word} found.'])
     if synonyms_list:
-        for i, syn in enumerate(synonyms_list[0]):
-            synonyms = '\n'.join(f"{i + 1}. {syn['wd']}")
+        for i, syn in enumerate(synonyms_list[0], 1):
+            synonyms = f"{i}. {syn['wd']}"
     else:
         synonyms = 'No synonyms found.'
     return synonyms
@@ -143,8 +137,8 @@ def get_antonyms(antonyms, data, input_word):
     antonyms_list = data[0]['def'][0]['sseq'][0][0][1].get('ant_list',
                                                            [f'No antonyms for the word {input_word} found.'])
     if antonyms_list:
-        for i, ant in enumerate(antonyms_list[0]):
-            antonyms = '\n'.join(f"{i + 1}. {ant['wd']}")
+        for i, ant in enumerate(antonyms_list[0], 1):
+            antonyms = f"{i}. {ant['wd']}"
     else:
         antonyms = 'No antonyms found.'
     return antonyms
@@ -168,6 +162,25 @@ def provide_examples(data, examples, input_word):
         examples = 'No examples found.'
     return examples
 
+def show_etymology(data, etymology):
+    et = data[0]['et'][0][1]
+    
+    if et:
+        cleaned_etymology = ''.join(et).replace("{it}", "").replace("{/it}", "") # clean the tags
+
+        # Split by both comma and semicolon in one line using re.split
+        etymology_parts = re.split(r', |; ', cleaned_etymology)
+        et_entry = ""
+        print("Etymology:")
+        for i, part in enumerate(etymology_parts, 1):
+            # Print each part on a new line with numbering
+            et_entry += f"{i}. {part}\n"
+
+    date = data[0]['date']
+
+    etymology = (et_entry, date)
+    return etymology
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5003)

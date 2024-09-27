@@ -16,13 +16,16 @@
         <form method="POST" action="/">
             <div>
                 <label for="search_box" style="color: palevioletred; font-size: 25px; font-weight: bold; text-shadow: 1px 1px hotpink;">Enter word:</label>
-                <input type="search" id="search_box" name="input_word" placeholder="Enter word" required><br>
+                <input type="search" id="search_box" name="input_word" value="{{ input_word }}" placeholder="Enter word" required><br>
                 <div id="button_groups">
-                    <button class="edit_button" type="submit" name="action" value="definition">Get definition</button>
+                    <button class="edit_button" type="submit" name="action" value="definition">Get definitions</button>
+                    <button class="edit_button" type="submit" name="action" value="pos">Show part of speech</button>
                     <button class="edit_button" type="submit" name="action" value="synonyms">Get synonyms</button>
                     <button class="edit_button" type="submit" name="action" value="antonyms">Get antonyms</button>
-                    <button class="edit_button" type="submit" name="action" value="pronunciation">Get pronunciation</button>
+                    <button class="edit_button" type="submit" name="action" value="pronunciation">Get pronunciations</button>
                     <button class="edit_button" type="submit" name="action" value="examples">Provide examples</button>
+                    <button class="edit_button" type="submit" name="action" value="etymology">Show etymology</button>
+
                 </div>
             </div>
         </form>
@@ -32,6 +35,10 @@
     
             {% if definition %}
                 <p class="outputs"><strong>Definition:</strong> {{ definition }}</p>
+            {% endif %}
+
+            {% if pos %}
+                <p class="outputs">The word {{ input_word }} is a <strong>{{ pos }}</strong> </p>
             {% endif %}
     
             {% if synonyms %}
@@ -48,6 +55,11 @@
     
             {% if examples %}
                 <p class="outputs"><strong>Examples:</strong> {{ examples }}</p>
+            {% endif %}
+
+            {% if etymology %}
+                <p class="outputs"><strong>Etymology:</strong> {{ etymology[0] }}</p>
+                <p class="outputs"><strong>Date:</strong> {{ etymology[1] }}</p>
             {% endif %}
     {% endif %}
      

@@ -25,6 +25,30 @@ def get_definition(word, api_key):
         print('Error:', response.status_code)
 
 
+def show_part_of_speech(word, api_key):
+    url = f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={api_key}"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        # print(data)
+
+        # Check if any definitions are available
+        if isinstance(data, list) and len(data) > 0:
+
+            entry = data[0]
+
+            if 'fl' in entry:
+                pos = entry['fl']
+                print(f"The word {word} is a {pos}")
+            else:
+                print(f"The word {word} does not exist.")
+        else:
+            print(f"The word {word} does not exist.")
+    else:
+        print('Error:', response.status_code)
+
 def get_synonyms(word, api_key):
     url = f"https://www.dictionaryapi.com/api/v3/references/thesaurus/json/{word}?key={api_key}"
 
@@ -39,6 +63,8 @@ def get_synonyms(word, api_key):
             # Access the first entry in the list
             syn_list = data[0]['def'][0]['sseq'][0][0][1]['syn_list']
             synonyms = []
+            print(f"Synonyms for the word {word}: ")
+
             for syn in syn_list[0]:
                 synonyms.append(syn['wd'])
 
@@ -67,6 +93,9 @@ def get_antonyms(word, api_key):
             ant_list = data[0]['def'][0]['sseq'][0][0][1]['ant_list']
 
             antonyms = []
+
+            print(f"Antonyms for the word {word}: ")
+
             for ant in ant_list[0]:
                 antonyms.append(ant['wd'])
 
@@ -86,7 +115,7 @@ def get_pronunciation(word, api_key):
 
     if response.status_code == 200:
         data = response.json()
-        print(data)
+        #print(data)
 
         # Check if any definitions are available
         if isinstance(data, list) and len(data) > 0:
@@ -114,6 +143,7 @@ def provide_examples(word, api_key):
             t_values = []
             entry = data[0]
 
+            print(f"The word {word} is used correctly in the following examples:")
             if 'quotes' in entry:
                 for quote in entry['quotes']:
                     if 't' in quote:
@@ -128,11 +158,40 @@ def provide_examples(word, api_key):
         print('Error:', response.status_code)
 
 
+def show_etymology(word, api_key):
+    url = f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={api_key}"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        # print(data)
+
+        # Check if any definitions are available
+        if isinstance(data, list) and len(data) > 0:
+
+            entry = data[0]
+
+            if 'et' in entry and 'date' in entry:
+                et_entry = entry['et'][0][1]
+                date_entry = entry['date']
+                print(f"Etymology: {et_entry}")
+                print(f"Date: {date_entry}")
+            else:
+                print(f"The word {word} does not exist.")
+        else:
+            print(f"The word {word} does not exist.")
+    else:
+        print('Error:', response.status_code)
+
+
 api_keys = ["47a18b32-61c5-4951-ad64-1fdbbf295a5d", "864ede40-eae9-41c8-98c3-c24c92e8dd4e"]
 
-word = "grateful"
+word = "awkward"
 
 get_definition(word=word, api_key=api_keys[0])
+
+show_part_of_speech(word=word, api_key=api_keys[1])
 
 get_synonyms(word=word, api_key=api_keys[0])
 
@@ -141,3 +200,5 @@ get_antonyms(word=word, api_key=api_keys[0])
 get_pronunciation(word=word, api_key=api_keys[1])
 
 provide_examples(word=word, api_key=api_keys[1])
+
+show_etymology(word=word, api_key=api_keys[1])

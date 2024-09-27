@@ -140,7 +140,9 @@ def provide_examples(word, api_key):
                     if 't' in quote:
                         cleaned_t_value = quote['t'].replace("{qword}", "").replace("{/qword}", "")
                         t_values.append(cleaned_t_value)
-                print(t_values)
+                        for i, t_value in enumerate(t_values, 1):
+                            examples = f"{i}. {t_value}"
+                    print(examples)
             else:
                 print(f"The word {word} does not exist.")
 

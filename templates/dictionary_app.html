@@ -3,6 +3,8 @@
     <head>
         <title>Interactive Dictionary App</title>
         <link rel="stylesheet" href="../static/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
     </head>
     <body style="background-color: mistyrose;">
         <h1 style="text-align: center;">Interactive Dictionary Web App</h1>
@@ -24,30 +26,31 @@
                 </div>
             </div>
         </form>
-
-         <!-- Display results after form submission -->
-    {% if input_word %}
-        <h2>{{ input_word }}:</h2>
-
-        {% if definition %}
-            <p><strong>Definition:</strong> {{ definition }}</p>
-        {% endif %}
-
-        {% if synonyms %}
-            <p><strong>Synonyms:</strong> {{ synonyms | join(', ') }}</p>
-        {% endif %}
-
-        {% if antonyms %}
-            <p><strong>Antonyms:</strong> {{ antonyms | join(', ') }}</p>
-        {% endif %}
-
-        {% if pronunciation %}
-            <p><strong>Pronunciation:</strong> {{ pronunciation }}</p>
-        {% endif %}
-
-        {% if examples %}
-            <p><strong>Examples:</strong> {{ examples | join(', ') }}</p>
-        {% endif %}
+        <!-- Display results after form submission -->
+        {% if input_word %}
+            <h2>Results for: {{ input_word }}</h2>
+    
+            {% if definition %}
+                <p class="outputs"><strong>Definition:</strong> {{ definition }}</p>
+            {% endif %}
+    
+            {% if synonyms %}
+                <p class="outputs"><strong>Synonyms:</strong> {{ synonyms }}</p>
+            {% endif %}
+    
+            {% if antonyms %}
+                <p class="outputs"><strong>Antonyms:</strong> {{ antonyms }}</p>
+            {% endif %}
+    
+            {% if pronunciation %}
+                <p class="outputs"><strong>Pronunciation:</strong> {{ pronunciation }}</p>
+            {% endif %}
+    
+            {% if examples %}
+                <p class="outputs"><strong>Examples:</strong> {{ examples }}</p>
+            {% endif %}
     {% endif %}
+     
+
     </body>
 </html>

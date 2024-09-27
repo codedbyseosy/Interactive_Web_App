@@ -20,15 +20,15 @@ def home():
     ]
 
 
-    urls = {
-        "thesaurus": f"https://www.dictionaryapi.com/api/v3/references/thesaurus/json/{input_word}?key={api_keys[0]}",
-        "collegiate": f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{input_word}?key={api_keys[1]}"
-    }
-
 
     if request.method == 'POST':
         input_word = request.form['input_word']
         action = request.form['action']  # Check which button has been pressed
+
+        urls = {
+            "thesaurus": f"https://www.dictionaryapi.com/api/v3/references/thesaurus/json/{input_word}?key={api_keys[0]}",
+            "collegiate": f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{input_word}?key={api_keys[1]}"
+        }
 
         # If the user presses the 'Get definition' button
         if action == 'definition':
@@ -126,7 +126,7 @@ def get_pronunciation(data, input_word, pronunciation):
 def provide_examples(data, examples, input_word):
     quotes = data[0].get('quotes', [f'No examples for the word {input_word} were found.'])
     if quotes:
-        for quote in quotes:
+        for i, quote in enumerate(quotes):
             if 't' in quote:
                 examples = '\n'.join(f"{i + 1}. {quote['t']}")
             else:

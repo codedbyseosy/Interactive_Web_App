@@ -191,7 +191,7 @@ def show_etymology(word, api_key):
 
 api_keys = ["47a18b32-61c5-4951-ad64-1fdbbf295a5d", "864ede40-eae9-41c8-98c3-c24c92e8dd4e"]
 
-word = "friend"
+word = "awkward"
 
 get_definition(word=word, api_key=api_keys[0])
 

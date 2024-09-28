@@ -35,7 +35,7 @@ def home():
 
             if response.status_code == 200:
                 data = response.json()
-                definition = get_definition(data, definition, input_word)
+                definition = get_definition(data, input_word)
             else:
                 definition = 'Error fetching definition.'
 
@@ -55,7 +55,7 @@ def home():
 
             if response.status_code == 200:
                 data = response.json()
-                synonyms = get_synonyms(data, input_word, synonyms)
+                synonyms = get_synonyms(data, input_word)
             else:
                 synonyms = 'Error fetching synonyms.'
 
@@ -65,7 +65,7 @@ def home():
 
             if response.status_code == 200:
                 data = response.json()
-                antonyms = get_antonyms(antonyms, data, input_word)
+                antonyms = get_antonyms(data, input_word)
             else:
                 antonyms = 'Error fetching antonyms.'
 
@@ -95,11 +95,9 @@ def home():
 
             if response.status_code == 200:
                 data = response.json()
-                etymology = show_etymology(data, etymology)
+                etymology = show_etymology(data)
             else:
                 etymology = 'Error fetching etymology.'
-
-
 
     return render_template('dictionary_app.html',
                            input_word=input_word,
@@ -107,38 +105,43 @@ def home():
                            pronunciation=pronunciation, examples=examples, etymology=etymology)
 
 
-
-def get_definition(data, definition, input_word):
+def get_definition(data,  input_word):
     definitions = data[0].get('shortdef', [f'No definition for the word {input_word}.'])
+    definition = ''
     if definitions:
-        for i, defn in enumerate(definitions):
-            definition = '\n'.join(f"{i + 1}. {defn}")
+        for i, defn in enumerate(definitions, 1):
+            # Append each definition to the 'definition' string
+            definition += f"{i}. {defn}<br>"
     else:
         definition = 'No definition found.'
     return definition
+
 
 def show_part_of_speech(data, input_word, part_of_speech):
     pos = data[0].get('fl', [f'The word {input_word} does not belong to any part of speech.'])
     part_of_speech = pos
     return part_of_speech
 
-def get_synonyms(data, input_word, synonyms):
+
+def get_synonyms(data, input_word):
     synonyms_list = data[0]['def'][0]['sseq'][0][0][1].get('syn_list',
                                                            [f'No synonyms for the word {input_word} found.'])
+    synonyms = ''
     if synonyms_list:
         for i, syn in enumerate(synonyms_list[0], 1):
-            synonyms = f"{i}. {syn['wd']}"
+            synonyms += f"{i}. {syn['wd']}<br>"
     else:
         synonyms = 'No synonyms found.'
     return synonyms
 
 
-def get_antonyms(antonyms, data, input_word):
+def get_antonyms(data, input_word):
     antonyms_list = data[0]['def'][0]['sseq'][0][0][1].get('ant_list',
                                                            [f'No antonyms for the word {input_word} found.'])
+    antonyms = ''
     if antonyms_list:
         for i, ant in enumerate(antonyms_list[0], 1):
-            antonyms = f"{i}. {ant['wd']}"
+            antonyms += f"{i}. {ant['wd']}<br>"
     else:
         antonyms = 'No antonyms found.'
     return antonyms
@@ -153,18 +156,20 @@ def get_pronunciation(data, input_word, pronunciation):
 def provide_examples(data, examples, input_word):
     quotes = data[0].get('quotes', [f'No examples for the word {input_word} were found.'])
     if quotes:
-        for i, quote in enumerate(quotes):
+        for i, quote in enumerate(quotes, 1):
             if 't' in quote:
-                examples = '\n'.join(f"{i + 1}. {quote['t']}")
+                examples = '\n'.join(f"{i}. {quote['t']}")
             else:
                 examples = 'No examples found.'
     else:
         examples = 'No examples found.'
     return examples
 
-def show_etymology(data, etymology):
+
+def show_etymology(data):
     et = data[0]['et'][0][1]
-    
+
+    etymology = ''
     if et:
         cleaned_etymology = ''.join(et).replace("{it}", "").replace("{/it}", "") # clean the tags
 
@@ -174,7 +179,7 @@ def show_etymology(data, etymology):
         print("Etymology:")
         for i, part in enumerate(etymology_parts, 1):
             # Print each part on a new line with numbering
-            et_entry += f"{i}. {part}\n"
+            et_entry += f"{i}. {part}<br>"
 
     date = data[0]['date']
 

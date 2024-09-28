@@ -4,7 +4,7 @@
         <title>Interactive Dictionary App</title>
         <link rel="stylesheet" href="../static/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
-
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body style="background-color: mistyrose;">
         <h1 style="text-align: center;">Interactive Dictionary Web App</h1>
@@ -34,7 +34,7 @@
             <h2>Results for: {{ input_word }}</h2>
     
             {% if definition %}
-                <p class="outputs"><strong>Definition:</strong> {{ definition }}</p>
+                <p class="outputs"><strong>Definition:</strong> {{ definition | safe}}</p>
             {% endif %}
 
             {% if pos %}
@@ -42,11 +42,11 @@
             {% endif %}
     
             {% if synonyms %}
-                <p class="outputs"><strong>Synonyms:</strong> {{ synonyms }}</p>
+                <p class="outputs"><strong>Synonyms:</strong> {{ synonyms | safe }}</p>
             {% endif %}
     
             {% if antonyms %}
-                <p class="outputs"><strong>Antonyms:</strong> {{ antonyms }}</p>
+                <p class="outputs"><strong>Antonyms:</strong> {{ antonyms | safe }}</p>
             {% endif %}
     
             {% if pronunciation %}
@@ -58,7 +58,7 @@
             {% endif %}
 
             {% if etymology %}
-                <p class="outputs"><strong>Etymology:</strong> {{ etymology[0] }}</p>
+                <p class="outputs"><strong>Etymology:</strong> {{ etymology[0] | safe }}</p>
                 <p class="outputs"><strong>Date:</strong> {{ etymology[1] }}</p>
             {% endif %}
     {% endif %}

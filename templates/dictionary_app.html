@@ -54,7 +54,7 @@
             {% endif %}
     
             {% if examples %}
-                <p class="outputs"><strong>Examples:</strong> {{ examples }}</p>
+                <p class="outputs"><strong>Examples:</strong> {{ examples | safe }}</p>
             {% endif %}
 
             {% if etymology %}

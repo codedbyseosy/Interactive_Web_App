@@ -85,7 +85,7 @@ def home():
 
             if response.status_code == 200:
                 data = response.json()
-                examples = provide_examples(data, examples, input_word)
+                examples = provide_examples(data, input_word)
             else:
                 examples = 'Error fetching examples.'
 
@@ -153,12 +153,14 @@ def get_pronunciation(data, input_word, pronunciation):
     return pronunciation
 
 
-def provide_examples(data, examples, input_word):
+def provide_examples(data, input_word):
     quotes = data[0].get('quotes', [f'No examples for the word {input_word} were found.'])
+    examples = ''
     if quotes:
         for i, quote in enumerate(quotes, 1):
             if 't' in quote:
-                examples = '\n'.join(f"{i}. {quote['t']}")
+                cleaned_t_value = quote['t'].replace("{qword}", "").replace("{/qword}", "")
+                examples += f"{i}. {cleaned_t_value}<br>"
             else:
                 examples = 'No examples found.'
     else:

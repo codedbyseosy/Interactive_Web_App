@@ -4,6 +4,7 @@ import requests, re
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     input_word = ""
@@ -171,7 +172,7 @@ def provide_examples(data, input_word):
 def show_etymology(data):
     et = data[0]['et'][0][1]
 
-    etymology = ''
+    etymology = ()
     if et:
         cleaned_etymology = ''.join(et).replace("{it}", "").replace("{/it}", "") # clean the tags
 
@@ -183,9 +184,10 @@ def show_etymology(data):
             # Print each part on a new line with numbering
             et_entry += f"{i}. {part}<br>"
 
-    date = data[0]['date']
+    date_entry = data[0]['date']
+    cleaned_date = re.sub(r'\{[^}]*\}', '', date_entry)
 
-    etymology = (et_entry, date)
+    etymology = (et_entry, cleaned_date)
     return etymology
 
 

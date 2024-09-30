@@ -41,7 +41,11 @@ def show_part_of_speech(word, api_key):
 
             if 'fl' in entry:
                 pos = entry['fl']
-                print(f"The word {word} is a {pos}")
+                if pos.startswith(('a', 'e', 'i', 'o', 'u')):
+                    print(f"The word {word} is an {pos}")
+                else:
+                    print(f"The word {word} is a {pos}")
+
             else:
                 print(f"The word {word} does not exist.")
         else:
@@ -180,7 +184,8 @@ def show_etymology(word, api_key):
 
                 # Print the date
                 date_entry = entry['date']
-                print(f"Date: {date_entry}")
+                cleaned_date = re.sub(r'\{[^}]*\}', '', date_entry)
+                print(f"Date of origin: {cleaned_date.strip()}")
             else:
                 print(f"The word {word} does not exist.")
         else:

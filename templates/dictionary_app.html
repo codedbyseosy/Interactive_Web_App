@@ -29,6 +29,7 @@
                 </div>
             </div>
         </form>
+
         <!-- Display results after form submission -->
         {% if input_word %}
             <h2>Results for: {{ input_word }}</h2>
@@ -38,15 +39,19 @@
             {% endif %}
 
             {% if pos %}
-                <p class="outputs">The word {{ input_word }} is a <strong>{{ pos }}</strong> </p>
-            {% endif %}
+                {% if pos.startswith('a') or pos.startswith('e') or pos.startswith('i') or pos.startswith('o') or pos.startswith('u') %}
+                    <p class="outputs">The word {{ input_word }} is an <strong>{{ pos }}</strong> </p>
+                {% else %}
+                    <p class="outputs">The word {{ input_word }} is a <strong>{{ pos }}</strong> </p>
+                {% endif %}  <!-- This closes the inner if -->
+            {% endif %}  <!-- This closes the outer if -->
     
             {% if synonyms %}
-                <p class="outputs"><strong>Synonyms:</strong> {{ synonyms | safe }}</p>
+                <p class="outputs"><strong>Synonyms:</strong><br>{{ synonyms | safe }}</p>
             {% endif %}
     
             {% if antonyms %}
-                <p class="outputs"><strong>Antonyms:</strong> {{ antonyms | safe }}</p>
+                <p class="outputs"><strong>Antonyms:</strong><br>{{ antonyms | safe }}</p>
             {% endif %}
     
             {% if pronunciation %}
@@ -59,9 +64,9 @@
 
             {% if etymology %}
                 <p class="outputs"><strong>Etymology:</strong> {{ etymology[0] | safe }}</p>
-                <p class="outputs"><strong>Date:</strong> {{ etymology[1] }}</p>
+                <p class="outputs"><strong>Date of origin:</strong> {{ etymology[1] }}</p>
             {% endif %}
-    {% endif %}
+        {% endif %}
      
 
     </body>

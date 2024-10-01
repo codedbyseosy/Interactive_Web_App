@@ -2,6 +2,11 @@ import requests, re
 
 
 def get_definition(word, api_key):
+    # Input validation
+    if not isinstance(word, str) or not word.isalpha():
+        raise ValueError("Oops! It looks like you have entered an invalid word. "
+                         "Please re-enter the word using only alphabetic characters.")
+
     url = f"https://www.dictionaryapi.com/api/v3/references/thesaurus/json/{word}?key={api_key}"
 
     try:
@@ -46,6 +51,11 @@ def get_definition(word, api_key):
 
 
 def show_part_of_speech(word, api_key):
+    # Input validation
+    if not isinstance(word, str) or not word.isalpha():
+        raise ValueError("Oops! It looks like you have entered an invalid word. "
+                         "Please re-enter the word using only alphabetic characters.")
+
     url = f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={api_key}"
 
     try:
@@ -87,6 +97,11 @@ def show_part_of_speech(word, api_key):
 
 
 def get_synonyms(word, api_key):
+    # Input validation
+    if not isinstance(word, str) or not word.isalpha():
+        raise ValueError("Oops! It looks like you have entered an invalid word. "
+                         "Please re-enter the word using only alphabetic characters.")
+
     url = f"https://www.dictionaryapi.com/api/v3/references/thesaurus/json/{word}?key={api_key}"
 
     try:
@@ -128,6 +143,11 @@ def get_synonyms(word, api_key):
 
 
 def get_antonyms(word, api_key):
+    # Input validation
+    if not isinstance(word, str) or not word.isalpha():
+        raise ValueError("Oops! It looks like you have entered an invalid word. "
+                         "Please re-enter the word using only alphabetic characters.")
+
     url = f"https://www.dictionaryapi.com/api/v3/references/thesaurus/json/{word}?key={api_key}"
 
     try:
@@ -168,6 +188,11 @@ def get_antonyms(word, api_key):
 
 
 def get_pronunciation(word, api_key):
+    # Input validation
+    if not isinstance(word, str) or not word.isalpha():
+        raise ValueError("Oops! It looks like you have entered an invalid word. "
+                         "Please re-enter the word using only alphabetic characters.")
+
     url = f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={api_key}"
 
     try:
@@ -206,6 +231,11 @@ def get_pronunciation(word, api_key):
 
 
 def provide_examples(word, api_key):
+    # Input validation
+    if not isinstance(word, str) or not word.isalpha():
+        raise ValueError("Oops! It looks like you have entered an invalid word. "
+                         "Please re-enter the word using only alphabetic characters.")
+
     url = f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={api_key}"
 
     try:
@@ -251,6 +281,11 @@ def provide_examples(word, api_key):
 
 
 def show_etymology(word, api_key):
+    # Input validation
+    if not isinstance(word, str) or not word.isalpha():
+        raise ValueError("Oops! It looks like you have entered an invalid word. "
+                         "Please re-enter the word using only alphabetic characters.")
+
     url = f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={api_key}"
 
     try:
@@ -306,20 +341,27 @@ def show_etymology(word, api_key):
         print(f"Oops! An unexpected error occurred: {e}. Please try again later.")
 
 
-api_keys = ["47a18b32-61c5-4951-ad64-1fdbbf295a5d", "864ede40-eae9-41c8-98c3-c24c92e8dd4e"]
+try:
 
-word = "family"
+    api_keys = ["47a18b32-61c5-4951-ad64-1fdbbf295a5d", "864ede40-eae9-41c8-98c3-c24c92e8dd4e"]
 
-get_definition(word=word, api_key=api_keys[0])
+    word = "family$"
 
-show_part_of_speech(word=word, api_key=api_keys[1])
+    get_definition(word=word, api_key=api_keys[0])
 
-get_synonyms(word=word, api_key=api_keys[0])
+    show_part_of_speech(word=word, api_key=api_keys[1])
 
-get_antonyms(word=word, api_key=api_keys[0])
+    get_synonyms(word=word, api_key=api_keys[0])
 
-get_pronunciation(word=word, api_key=api_keys[1])
+    get_antonyms(word=word, api_key=api_keys[0])
 
-provide_examples(word=word, api_key=api_keys[1])
+    get_pronunciation(word=word, api_key=api_keys[1])
 
-show_etymology(word=word, api_key=api_keys[1])
+    provide_examples(word=word, api_key=api_keys[1])
+
+    show_etymology(word=word, api_key=api_keys[1])
+
+except ValueError as ve:
+    print(f"Input error: {ve}")
+
+

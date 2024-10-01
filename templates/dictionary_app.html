@@ -5,12 +5,77 @@
         <link rel="stylesheet" href="../static/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+        <style>
+            /* Modal Styling */
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            }
+
+            .modal-content {
+                background-color: white; /* Soft pink background */
+                margin: 15% auto;
+                padding: 20px;
+                border-radius: 25px; /* Rounded edges */
+                width: 80%;
+                max-width: 500px;
+                text-align: center;
+                box-shadow: 0px 6px 15px rgba(255, 182, 193, 0.5); /* Soft pink shadow */
+                position: relative;
+                border: 2px solid lightpink; /* Pink border */
+            }
+
+            /* Flowery Border */
+            .modal-content:before {
+                content: "";
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+                background-image: url('path-to-your-floral-image.jpeg'); /* Add floral image */
+                background-size: cover;
+                border-radius: 25px;
+                z-index: -1; /* Ensure floral image stays behind content */
+            }
+
+            .modal-content h3 {
+                color: deeppink;
+                font-family: 'Pacifico', cursive;
+                font-size: 2rem;
+            }
+
+            .modal-content p {
+                font-family: 'Dancing Script', cursive;
+                color: deeppink;
+                font-size: 1.5rem;
+            }
+
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover, .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body style="background-color: mistyrose;">
         <h1 style="text-align: center;">Interactive Dictionary Web App</h1>
-        <p style="font-size: 20px; text-align: center;">Search for any word and find its definition,
-            synonyms, and antonyms, as well as examples of
-            how to use them for more than 275,000 words.
+        <p style="font-size: 20px; text-align: center;">
+            Search for any word and find its definition, synonyms, antonyms, as well as examples for over 275,000 words.
         </p>
 
         <form method="POST" action="/">
@@ -25,44 +90,47 @@
                     <button class="edit_button" type="submit" name="action" value="pronunciation">Get pronunciations</button>
                     <button class="edit_button" type="submit" name="action" value="examples">Provide examples</button>
                     <button class="edit_button" type="submit" name="action" value="etymology">Show etymology</button>
-
                 </div>
             </div>
         </form>
 
-            <!-- Display any error messages -->
-        {% if error_message %}
-            <p id="error_messages" style="color: red;">{{ error_message }}</p>
-        {% endif %}
+        <!-- Error Modal -->
+        <div id="errorModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Error</h3>
+                <p id="modal-error-message">{{ error_message }}</p>
+            </div>
+        </div>
 
         <!-- Display results after form submission -->
         {% if input_word %}
             <h2>Results for: {{ input_word }}</h2>
-    
+
             {% if definition %}
-                <p class="outputs"><strong>Definition:</strong> {{ definition | safe}}</p>
+                <p class="outputs"><strong>Definition:</strong> {{ definition | safe }}</p>
             {% endif %}
 
             {% if pos %}
                 {% if pos.startswith('a') or pos.startswith('e') or pos.startswith('i') or pos.startswith('o') or pos.startswith('u') %}
-                    <p class="outputs">The word {{ input_word }} is an <strong>{{ pos }}</strong> </p>
+                    <p class="outputs">The word {{ input_word }} is an <strong>{{ pos }}</strong></p>
                 {% else %}
-                    <p class="outputs">The word {{ input_word }} is a <strong>{{ pos }}</strong> </p>
-                {% endif %}  <!-- This closes the inner if -->
-            {% endif %}  <!-- This closes the outer if -->
-    
+                    <p class="outputs">The word {{ input_word }} is a <strong>{{ pos }}</strong></p>
+                {% endif %}
+            {% endif %}
+
             {% if synonyms %}
                 <p class="outputs"><strong>Synonyms:</strong><br>{{ synonyms | safe }}</p>
             {% endif %}
-    
+
             {% if antonyms %}
                 <p class="outputs"><strong>Antonyms:</strong><br>{{ antonyms | safe }}</p>
             {% endif %}
-    
+
             {% if pronunciation %}
                 <p class="outputs"><strong>Pronunciation:</strong> {{ pronunciation }}</p>
             {% endif %}
-    
+
             {% if examples %}
                 <p class="outputs"><strong>Examples:</strong> {{ examples | safe }}</p>
             {% endif %}
@@ -72,7 +140,30 @@
                 <p class="outputs"><strong>Date of origin:</strong> {{ etymology[1] }}</p>
             {% endif %}
         {% endif %}
-     
 
+    <script>
+        // Get modal element
+        var modal = document.getElementById("errorModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // Display modal if there's an error message (server-side check)
+        {% if error_message %}
+            modal.style.display = "block";
+        {% endif %}
+
+        // Close modal when the user clicks on <span> (x)
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Close modal if the user clicks anywhere outside the modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
     </body>
 </html>

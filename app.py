@@ -15,6 +15,8 @@ def home():
     pronunciation = None
     examples = None
     etymology = None
+    error_message = None  # To hold any error messages
+
 
     api_keys = [
         "47a18b32-61c5-4951-ad64-1fdbbf295a5d",
@@ -25,6 +27,12 @@ def home():
 
         input_word = request.form['input_word']
 
+        # Input validation: Ensure the input is alphabetic
+        if not input_word.isalpha():
+            error_message = ("Oops! It looks like you have entered an invalid word."
+                             " Please re-enter the word using only alphabetic characters.")
+            return render_template('dictionary_app.html', error_message=error_message)
+
         action = request.form['action']  # Check which button has been pressed
 
         urls = {
@@ -32,11 +40,10 @@ def home():
             "collegiate": f"https://www.dictionaryapi.com/api/v3/references/collegiate/json/{input_word}?key={api_keys[1]}"
         }
 
-        # If the user presses the 'Get definition' button
-        if action == 'definition':
-            try:
+        try:
+            # If the user presses the 'Get definition' button
+            if action == 'definition':
                 response = requests.get(urls['thesaurus'], timeout=200)
-
                 if response.status_code == 200:
                     try:
                         data = response.json()
@@ -46,26 +53,11 @@ def home():
 
                     definition = get_definition(data, input_word)
                 else:
-                    definition = 'Error fetching definition.'
-            except TypeError:
-                print(f"Oops! We received unexpected data from the dictionary service. "
-                      "Please try again later or check the word you're looking up.")
-            except requests.exceptions.Timeout:
-                print("It looks like the request took too long. "
-                      "Please check your internet connection and try again later.")
+                    error_message = 'Error fetching definition.'
 
-            except requests.exceptions.ConnectionError:
-                print("We're having trouble connecting to the dictionary service. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.RequestException as e:
-                print(f"An unexpected error occurred: {e}. Please try again later.")
-
-        # If the user presses the 'Show part of speech' button
-        elif action == 'pos':
-            try:
+            # If the user presses the 'Show part of speech' button
+            elif action == 'pos':
                 response = requests.get(urls['collegiate'], timeout=200)
-
                 if response.status_code == 200:
                     try:
                         data = response.json()
@@ -73,29 +65,13 @@ def home():
                         print("Invalid JSON format received from the API.")
                         return
 
-                    part_of_speech = show_part_of_speech(data, input_word, part_of_speech)
+                    part_of_speech = show_part_of_speech(data, input_word)
                 else:
-                    part_of_speech = 'Error fetching the parts of speech.'
+                    error_message = 'Error fetching the parts of speech.'
 
-            except TypeError:
-                print(f"Oops! We received unexpected data from the dictionary service. "
-                      "Please try again later or check the word you're looking up.")
-            except requests.exceptions.Timeout:
-                print("It looks like the request took too long. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.ConnectionError:
-                print("We're having trouble connecting to the dictionary service. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.RequestException as e:
-                print(f"An unexpected error occurred: {e}. Please try again later.")
-
-        # If the user presses the 'Get synonyms' button
-        elif action == 'synonyms':
-            try:
+            # If the user presses the 'Get synonyms' button
+            elif action == 'synonyms':
                 response = requests.get(urls['thesaurus'], timeout=200)
-
                 if response.status_code == 200:
                     try:
                         data = response.json()
@@ -105,27 +81,11 @@ def home():
 
                     synonyms = get_synonyms(data, input_word)
                 else:
-                    synonyms = 'Error fetching synonyms.'
+                    error_message = 'Error fetching synonyms.'
 
-            except TypeError:
-                print(f"Oops! We received unexpected data from the dictionary service. "
-                      "Please try again later or check the word you're looking up.")
-            except requests.exceptions.Timeout:
-                print("It looks like the request took too long. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.ConnectionError:
-                print("We're having trouble connecting to the dictionary service. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.RequestException as e:
-                print(f"An unexpected error occurred: {e}. Please try again later.")
-
-        # If the user presses the 'Get antonyms' button
-        elif action == 'antonyms':
-            try:
+            # If the user presses the 'Get antonyms' button
+            elif action == 'antonyms':
                 response = requests.get(urls['thesaurus'], timeout=200)
-
                 if response.status_code == 200:
                     try:
                         data = response.json()
@@ -135,27 +95,11 @@ def home():
 
                     antonyms = get_antonyms(data, input_word)
                 else:
-                    antonyms = 'Error fetching antonyms.'
+                    error_message = 'Error fetching antonyms.'
 
-            except TypeError:
-                print(f"Oops! We received unexpected data from the dictionary service. "
-                      "Please try again later or check the word you're looking up.")
-            except requests.exceptions.Timeout:
-                print("It looks like the request took too long. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.ConnectionError:
-                print("We're having trouble connecting to the dictionary service. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.RequestException as e:
-                print(f"An unexpected error occurred: {e}. Please try again later.")
-
-        # If the user presses the 'Get pronunciation' button
-        elif action == 'pronunciation':
-            try:
+            # If the user presses the 'Get pronunciation' button
+            elif action == 'pronunciation':
                 response = requests.get(urls['collegiate'], timeout=200)
-
                 if response.status_code == 200:
                     try:
                         data = response.json()
@@ -163,27 +107,12 @@ def home():
                         print("Invalid JSON format received from the API.")
                         return
 
-                    pronunciation = get_pronunciation(data, input_word, pronunciation)
+                    pronunciation = get_pronunciation(data, input_word)
                 else:
-                    pronunciation = 'Error fetching pronunciations.'
+                    error_message = 'Error fetching pronunciations.'
 
-            except TypeError:
-                print(f"Oops! We received unexpected data from the dictionary service. "
-                      "Please try again later or check the word you're looking up.")
-            except requests.exceptions.Timeout:
-                print("It looks like the request took too long. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.ConnectionError:
-                print("We're having trouble connecting to the dictionary service. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.RequestException as e:
-                print(f"An unexpected error occurred: {e}. Please try again later.")
-
-        # If the user the presses the 'Provide examples' button
-        elif action == 'examples':
-            try:
+            # If the user the presses the 'Provide examples' button
+            elif action == 'examples':
                 response = requests.get(urls['collegiate'], timeout=200)
 
                 if response.status_code == 200:
@@ -195,25 +124,10 @@ def home():
 
                     examples = provide_examples(data, input_word)
                 else:
-                    examples = 'Error fetching examples.'
+                    error_message = 'Error fetching examples.'
 
-            except TypeError:
-                print(f"Oops! We received unexpected data from the dictionary service. "
-                      "Please try again later or check the word you're looking up.")
-            except requests.exceptions.Timeout:
-                print("It looks like the request took too long. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.ConnectionError:
-                print("We're having trouble connecting to the dictionary service. "
-                      "Please check your internet connection and try again later.")
-
-            except requests.exceptions.RequestException as e:
-                print(f"An unexpected error occurred: {e}. Please try again later.")
-
-        # If the user the presses the 'Show etymology' button
-        elif action == 'etymology':
-            try:
+            # If the user the presses the 'Show etymology' button
+            elif action == 'etymology':
                 response = requests.get(urls['collegiate'], timeout=200)
 
                 if response.status_code == 200:
@@ -225,22 +139,19 @@ def home():
 
                     etymology = show_etymology(data)
                 else:
-                    etymology = 'Error fetching etymology.'
+                    error_message = 'Error fetching etymology.'
 
-            except TypeError:
-                print(f"Oops! We received unexpected data from the dictionary service. "
-                      "Please try again later or check the word you're looking up.")
-            except requests.exceptions.Timeout:
-                print(
-                    "It looks like the request took too long. "
-                    "Please check your internet connection and try again later.")
+        except TypeError:
+            error_message = "Oops! We received unexpected data from the dictionary service. Please try again later or check the word you're looking up."
 
-            except requests.exceptions.ConnectionError:
-                print("We're having trouble connecting to the dictionary service. "
-                      "Please check your internet connection and try again later.")
+        except requests.exceptions.Timeout:
+            error_message = "It looks like the request took too long. Please check your internet connection and try again later. "
 
-            except requests.exceptions.RequestException as e:
-                print(f"An unexpected error occurred: {e}. Please try again later.")
+        except requests.exceptions.ConnectionError:
+            error_message = "We're having trouble connecting to the dictionary service. Please check your internet connection and try again later."
+
+        except requests.exceptions.RequestException as e:
+            print(f"An unexpected error occurred: {e}. Please try again later.")
 
     return render_template('dictionary_app.html',
                            input_word=input_word,
@@ -258,9 +169,12 @@ def get_definition(data, input_word):
 
     except (IndexError, KeyError):
         # Handle the case where 'shortdef' is missing
-        definition = f"Sorry, no definitions for the word '{input_word}' were found."
+        error_message = f"Sorry, no definitions for the word '{input_word}' were found."
 
-    return definition
+    except Exception as e:
+        error_message = f"An error occurred while fetching the definition: {str(e)}."
+
+    return definition, error_message
 
 
 def show_part_of_speech(data, input_word):
@@ -270,9 +184,12 @@ def show_part_of_speech(data, input_word):
 
     except (IndexError, KeyError):
         # Handle the case where 'fl' is missing
-        part_of_speech = f"Sorry, we couldn't find what part of speech the word '{input_word}' belongs to."
+        error_message = f"Sorry, we couldn't find what part of speech the word '{input_word}' belongs to."
 
-    return part_of_speech
+    except Exception as e:
+        error_message = f"An error occurred while fetching the part of speech: {str(e)}."
+
+    return part_of_speech, error_message
 
 
 def get_synonyms(data, input_word):
@@ -285,9 +202,12 @@ def get_synonyms(data, input_word):
 
     except (IndexError, KeyError):
         # Handle the case where 'syn_list' is missing
-        synonyms = f"Sorry, we couldn't find any synonyms for the word '{input_word}'."
+        error_message = f"Sorry, we couldn't find any synonyms for the word '{input_word}'."
 
-    return synonyms
+    except Exception as e:
+        error_message = f"An error occurred while fetching the synonyms: {str(e)}."
+
+    return synonyms, error_message
 
 
 def get_antonyms(data, input_word):
@@ -300,18 +220,26 @@ def get_antonyms(data, input_word):
 
     except (IndexError< KeyError):
         # Handle the case where 'ant_list' is missing
-        antonyms = f"Sorry, we couldn't find any antonyms for the word '{input_word}'."
+        error_message = f"Sorry, we couldn't find any antonyms for the word '{input_word}'."
 
-    return antonyms
+    except Exception as e:
+        error_message = f"An error occurred while fetching the antonyms: {str(e)}."
+
+    return antonyms, error_message
 
 
 def get_pronunciation(data, input_word):
     try:
         pronunciation = data[0]['hwi']['prs'][0].get('mw', f"No pronunciations for the word '{input_word}' were found.")
+
     except (IndexError, KeyError):
         # Handle the case where 'mw' is missing
-        pronunciation = f"Sorry, we couldn't find any pronunciations for the word '{input_word}'."
-    return pronunciation
+        error_message = f"Sorry, we couldn't find any pronunciations for the word '{input_word}'."
+
+    except Exception as e:
+        error_message = f"An error occurred while fetching the pronunciation: {str(e)}."
+
+    return pronunciation, error_message
 
 
 def provide_examples(data, input_word):
@@ -327,9 +255,12 @@ def provide_examples(data, input_word):
 
     except (IndexError, KeyError):
         # Handle the case where 'quotes' or 't' key is missing
-        examples = f"Sorry, we couldn't find any examples for how to use the word '{input_word}'."
+        error_message = f"Sorry, we couldn't find any examples for how to use the word '{input_word}'."
 
-    return examples
+    except Exception as e:
+        error_message = f"An error occurred while fetching the examples: {str(e)}."
+
+    return examples, error_message
 
 
 def show_etymology(data):
@@ -354,9 +285,12 @@ def show_etymology(data):
 
     except (IndexError, KeyError):
         # Handle the case where 'et' or 'date' keys are missing
-        print(f"Sorry, the etymology data for the word '{input_word}' does not exist")
+        error_message = f"Sorry, the etymology data for the word '{input_word}' does not exist."
 
-    return etymology
+    except Exception as e:
+        error_message = f"An error occurred while fetching the etymology: {str(e)}."
+
+    return etymology, error_message
 
 
 if __name__ == '__main__':

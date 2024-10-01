@@ -30,6 +30,11 @@
             </div>
         </form>
 
+            <!-- Display any error messages -->
+        {% if error_message %}
+            <p id="error_messages" style="color: red;">{{ error_message }}</p>
+        {% endif %}
+
         <!-- Display results after form submission -->
         {% if input_word %}
             <h2>Results for: {{ input_word }}</h2>

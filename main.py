@@ -29,7 +29,7 @@ def get_definition(word, api_key):
                     print(f"Definition for the word {word}: ")
 
                     for i, definition in enumerate(definitions, start=1):
-                        print(f"{i}. {definition}")
+                        print(f"{i}. {definition}\n")
                 except KeyError:
                     # Handle the case where 'shortdef' is missing
                     print(f"Sorry, we couldn't find any definitions for the word '{word}'. ")
@@ -39,6 +39,10 @@ def get_definition(word, api_key):
             print(
                 f"Oops! Something went wrong while fetching the data. Please try again later. (Error: {response.status_code})")
 
+    # Handle unexpected data types in the response
+    except TypeError:
+        print(f"Oops! We received unexpected data from the dictionary service. "
+              "Please try again later or check the word you're looking up.")
     except requests.exceptions.Timeout:
         print("It looks like the request took too long. Please check your internet connection and try again later.")
 
@@ -85,6 +89,11 @@ def show_part_of_speech(word, api_key):
         else:
             print(f"Oops! Something went wrong while fetching the data. Please try again later. (Error: {response.status_code})")
 
+    # Handle unexpected data types in the response
+    except TypeError:
+        print(f"Oops! We received unexpected data from the dictionary service. "
+              "Please try again later or check the word you're looking up.")
+
     except requests.exceptions.Timeout:
         print("It looks like the request took too long. Please check your internet connection and try again later.")
 
@@ -122,7 +131,7 @@ def get_synonyms(word, api_key):
                     print(f"Synonyms for the word {word}: ")
 
                     for i, syn in enumerate(syn_list[0], 1):
-                        print(f"{i}. {syn['wd']}")
+                        print(f"{i}. {syn['wd']}\n")
                 except KeyError:
                     # Handle the case where 'syn_list' is missing
                     print(f"Sorry, we couldn't find any synonyms for the word '{word}'.")
@@ -130,6 +139,11 @@ def get_synonyms(word, api_key):
                 print(f"No definitions for the word {word}.")
         else:
             print(f"Oops! Something went wrong while fetching the data. Please try again later. (Error: {response.status_code})")
+
+    # Handle unexpected data types in the response
+    except TypeError:
+        print(f"Oops! We received unexpected data from the dictionary service. "
+              "Please try again later or check the word you're looking up.")
 
     except requests.exceptions.Timeout:
         print("It looks like the request took too long. Please check your internet connection and try again later.")
@@ -167,7 +181,7 @@ def get_antonyms(word, api_key):
                     print(f"Antonyms for the word {word}: ")
 
                     for i, ant in enumerate(ant_list[0], 1):
-                        print(f"{i}. {ant['wd']}")
+                        print(f"{i}. {ant['wd']}\n")
                 except KeyError:
                     # Handle the case where 'ant_list' is missing
                     print(f"Sorry, we couldn't find any antonyms for the word '{word}'.")
@@ -175,6 +189,11 @@ def get_antonyms(word, api_key):
                 print(f"No definitions for the word {word}.")
         else:
             print(f"Oops! Something went wrong while fetching the data. Please try again later. (Error: {response.status_code})")
+
+    # Handle unexpected data types in the response
+    except TypeError:
+        print(f"Oops! We received unexpected data from the dictionary service. "
+              "Please try again later or check the word you're looking up.")
 
     except requests.exceptions.Timeout:
         print("It looks like the request took too long. Please check your internet connection and try again later.")
@@ -219,6 +238,11 @@ def get_pronunciation(word, api_key):
         else:
             print(f"Oops! Something went wrong while fetching the data. Please try again later. (Error: {response.status_code})")
 
+    # Handle unexpected data types in the response
+    except TypeError:
+        print(f"Oops! We received unexpected data from the dictionary service. "
+              "Please try again later or check the word you're looking up.")
+
     except requests.exceptions.Timeout:
         print("It looks like the request took too long. Please check your internet connection and try again later.")
 
@@ -260,7 +284,7 @@ def provide_examples(word, api_key):
                             cleaned_t_value = quote['t'].replace("{qword}", "").replace("{/qword}", "")
                             t_values.append(cleaned_t_value)
                     for i, t_value in enumerate(t_values, 1):
-                        print(f"{i}. {t_value}")
+                        print(f"{i}. {t_value}\n")
                 except KeyError:
                     # Handle the case where 'quotes' or 't' key is missing
                     print(f"Sorry, we couldn't find any examples for how to use the word '{word}'.")
@@ -268,6 +292,11 @@ def provide_examples(word, api_key):
                 print(f"The word '{word}' does not exist.")
         else:
             print(f"Oops! Something went wrong while fetching the data. Please try again later. (Error: {response.status_code})")
+
+    # Handle unexpected data types in the response
+    except TypeError:
+        print(f"Oops! We received unexpected data from the dictionary service. "
+              "Please try again later or check the word you're looking up.")
 
     except requests.exceptions.Timeout:
         print("It looks like the request took too long. Please check your internet connection and try again later.")
@@ -330,6 +359,11 @@ def show_etymology(word, api_key):
         else:
             print(f"Oops! Something went wrong while fetching the data. Please try again later. (Error: {response.status_code})")
 
+    # Handle unexpected data types in the response
+    except TypeError:
+        print(f"Oops! We received unexpected data from the dictionary service. "
+              "Please try again later or check the word you're looking up.")
+
     except requests.exceptions.Timeout:
         print("It looks like the request took too long. Please check your internet connection and try again later.")
 
@@ -345,7 +379,7 @@ try:
 
     api_keys = ["47a18b32-61c5-4951-ad64-1fdbbf295a5d", "864ede40-eae9-41c8-98c3-c24c92e8dd4e"]
 
-    word = "family$"
+    word = "insipid"
 
     get_definition(word=word, api_key=api_keys[0])
 

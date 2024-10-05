@@ -3,7 +3,7 @@ import requests
 
 class DictionaryAPI:
     """
-        This class handles API requests and responses.
+    This class handles API requests and responses.
     """
     def __init__(self):
         self.api_keys = ["47a18b32-61c5-4951-ad64-1fdbbf295a5d", "864ede40-eae9-41c8-98c3-c24c92e8dd4e"]

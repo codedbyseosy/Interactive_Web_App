@@ -1,5 +1,6 @@
 input[type="search"] {
     font-size: 20px;
+    font-family: 'Merriweather', serif;
     border-radius: 25px;
     border: 1px solid lightpink;
     width: 100%;
@@ -40,7 +41,10 @@ form {
 }
 
 label {
-    font-family: 'Merriweather', serif;
+    /* font-family: 'Merriweather', serif; */
+    font-family: 'Pacifico', cursive;
+    
+
 }
 
 .edit_button {
@@ -80,16 +84,19 @@ label {
 
 strong {
     font-weight: bold;
+    font-family: 'Pacifico', cursive;
+    color: deeppink;
+    text-align: center;
 }
 
 html {
     scroll-behavior: smooth;
 }
-
+/* rgb(210, 240, 249)*/
 body {
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, mistyrose, lightpink, lavenderblush);
+    background: linear-gradient(135deg, mistyrose, rgb(210, 240, 249), lavenderblush);
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
@@ -117,7 +124,6 @@ h2 {
     text-align: center;
     margin-top: 30px;
     font-size: 1.5rem;
-    text-shadow: 2px 2px hotpink;
 }
 
 p {

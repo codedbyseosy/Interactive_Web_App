@@ -140,13 +140,13 @@
             <label for="search_box" style="color: palevioletred; font-size: 25px; font-weight: bold; text-shadow: 1px 1px hotpink;">Enter word:</label>
             <input type="search" id="search_box" name="input_word" value="{{ input_word }}" placeholder="Enter word" required><br>
             <div id="button_groups">
-                <button class="edit_button" type="submit" name="action" value="definition">Get definitions</button>
-                <button class="edit_button" type="submit" name="action" value="pos">Show part of speech</button>
-                <button class="edit_button" type="submit" name="action" value="synonyms">Get synonyms</button>
-                <button class="edit_button" type="submit" name="action" value="antonyms">Get antonyms</button>
-                <button class="edit_button" type="submit" name="action" value="pronunciation">Get pronunciations</button>
-                <button class="edit_button" type="submit" name="action" value="examples">Provide examples</button>
-                <button class="edit_button" type="submit" name="action" value="etymology">Show etymology</button>
+                <button class="edit_button" type="submit" name="action" value="definition">Definitions</button>
+                <button class="edit_button" type="submit" name="action" value="pos">Part of speech</button>
+                <button class="edit_button" type="submit" name="action" value="synonyms">Synonyms</button>
+                <button class="edit_button" type="submit" name="action" value="antonyms">Antonyms</button>
+                <button class="edit_button" type="submit" name="action" value="pronunciation">Pronunciations</button>
+                <button class="edit_button" type="submit" name="action" value="examples">Examples</button>
+                <button class="edit_button" type="submit" name="action" value="etymology">Etymology</button>
             </div>
         </div>
     </form>
@@ -166,14 +166,14 @@
             <h2>Results for: {{ input_word }}</h2>
 
             {% if definition %}
-                <p class="outputs"><strong>Definition:</strong> {{ definition | safe }}</p>
+                <p class="outputs"><strong>Definitions:</strong><br>{{ definition | safe }}</p>
             {% endif %}
 
-            {% if pos %}
-                {% if pos.startswith('a') or pos.startswith('e') or pos.startswith('i') or pos.startswith('o') or pos.startswith('u') %}
-                    <p class="outputs">The word {{ input_word }} is an <strong>{{ pos }}</strong></p>
+            {% if part_of_speech %}
+                {% if part_of_speech.startswith('a') or part_of_speech.startswith('e') or part_of_speech.startswith('i') or part_of_speech.startswith('o') or part_of_speech.startswith('u') %}
+                    <p class="outputs">The word {{ input_word }} is an <strong>{{ part_of_speech }}</strong></p>
                 {% else %}
-                    <p class="outputs">The word {{ input_word }} is a <strong>{{ pos }}</strong></p>
+                    <p class="outputs">The word {{ input_word }} is a <strong>{{ part_of_speech }}</strong></p>
                 {% endif %}
             {% endif %}
 
@@ -186,15 +186,15 @@
             {% endif %}
 
             {% if pronunciation %}
-                <p class="outputs"><strong>Pronunciation:</strong> {{ pronunciation }}</p>
+                <p class="outputs"><strong>Pronunciation:</strong><br>{{ pronunciation }}</p>
             {% endif %}
 
             {% if examples %}
-                <p class="outputs"><strong>Examples:</strong> {{ examples | safe }}</p>
+                <p class="outputs"><strong>Examples:</strong><br>{{ examples | safe }}</p>
             {% endif %}
 
             {% if etymology %}
-                <p class="outputs"><strong>Etymology:</strong> {{ etymology[0] | safe }}</p>
+                <p class="outputs"><strong>Etymology:</strong><br>{{ etymology[0] | safe }}</p>
                 <p class="outputs"><strong>Date of origin:</strong> {{ etymology[1] }}</p>
             {% endif %}
         {% endif %}

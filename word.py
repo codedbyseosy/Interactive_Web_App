@@ -7,8 +7,8 @@ class Word:
     This class represents a word with attributes like
     definition, synonyms, antonyms, etc.
     """
-    def __init__(self, input_word):
-        self.input_word = input_word
+    def __init__(self, word):
+        self.word = word
         self.da = DictionaryAPI()
         self.input_word_data = self.fetch_word_data()
 
@@ -16,7 +16,7 @@ class Word:
         """
         Fetch word data from the DictionaryAPI class.
         """
-        data = self.da.fetch_word_data(self.input_word)
+        data = self.da.fetch_word_data(self.word)
 
         # Ensure that the data is a tuple and the first two elements exist
         if isinstance(data, tuple) and len(data) >= 2 and data[0] and data[1]:
@@ -29,14 +29,13 @@ class Word:
         Method to retrieve and return the definition of the input word
         """
         if not self.input_word_data:
-            return (f"Oops! We could not find any data found for the word '{self.input_word}'. "
-                    f"Please try again later.")
+            return f"Oops! We could not find any data for the word '{self.word}'. Please try again later."
 
         try:
             definitions = self.input_word_data[0][0].get('shortdef', [])
 
             if not definitions:
-                return f"No definitions for the word '{self.input_word}' were found."
+                return f"No definitions for the word '{self.word}' were found."
 
             # Append each definition to the 'definition' string
             return '<br><br>'.join(f"{i}. {defn}" for i, defn in enumerate(definitions, 1))
@@ -47,18 +46,17 @@ class Word:
     def show_part_of_speech(self):
         """
         Method to retrieve and return what part of speech the input word belongs to
-         """
+        """
         if not self.input_word_data:
-            return (f"Oops! We could not find any data found for the word '{self.input_word}'. "
-                    f"Please try again later.")
+            return f"Oops! We could not find any data for the word '{self.word}'. Please try again later."
+
         try:
-            part_of_speech = self.input_word_data[1][0].get('fl', None)
+            part_of_speech = self.input_word_data[1][0].get('fl', [f"The word '{self.word}' does not belong to any part of speech."])
 
             if not part_of_speech:
-                return (f"Apologies, we were unable to find what part of speech the word '{self.input_word}'"
-                        f"belongs to.")
-            return part_of_speech
+                return f"Apologies, we were unable to find what part of speech the word '{self.word}' belongs to."
 
+            return part_of_speech
         except Exception as e:
             # Handle any other unexpected errors
             return self.da.handle_errors(e)
@@ -68,13 +66,13 @@ class Word:
         Method to retrieve and return the synonyms of the input word
          """
         if not self.input_word_data:
-            return (f"Oops! We could not find any data found for the word '{self.input_word}'. "
+            return (f"Oops! We could not find any data for the word '{self.word}'. "
                     f"Please try again later.")
         try:
             synonyms_list = self.input_word_data[0][0].get('def', [{}])[0].get('sseq', [[]])[0][0][1].get('syn_list', [])
 
             if not synonyms_list:
-                return f"No synonyms for the word '{self.input_word}' were found."
+                return f"No synonyms for the word '{self.word}' were found."
 
             return '<br><br>'.join(f"{i}. {syn['wd']}" for i, syn in enumerate(synonyms_list[0], 1))
         except Exception as e:
@@ -86,13 +84,13 @@ class Word:
         Method to retrieve and return the antonyms of the input word
         """
         if not self.input_word_data:
-            return (f"Oops! We could not find any data found for the word '{self.input_word}'. "
+            return (f"Oops! We could not find any data for the word '{self.word}'. "
                     f"Please try again later.")
         try:
             antonyms_list = self.input_word_data[0][0].get('def', [{}])[0].get('sseq', [[]])[0][0][1].get('ant_list', [])
 
             if not antonyms_list:
-                return f"No antonyms for the word '{self.input_word}' were found."
+                return f"No antonyms for the word '{self.word}' were found."
 
             return '<br><br>'.join(f"{i}. {ant['wd']}" for i, ant in enumerate(antonyms_list[0], 1))
         except Exception as e:
@@ -104,11 +102,11 @@ class Word:
          Method to retrieve and return the pronunciation of the input word
          """
         if not self.input_word_data:
-            return (f"Oops! We could not find any data found for the word '{self.input_word}'. "
+            return (f"Oops! We could not find any data for the word '{self.word}'. "
                     f"Please try again later.")
         try:
             return self.input_word_data[1][0]['hwi']['prs'][0].get('mw',
-                                                         f"No pronunciations for the word '{self.input_word}' were found.")
+                                                         f"No pronunciations for the word '{self.word}' were found.")
         except Exception as e:
             # Handle any other unexpected errors
             return self.da.handle_errors(e)
@@ -118,27 +116,51 @@ class Word:
         Method to retrieve and return the examples for how the input word is used
         """
         if not self.input_word_data:
-            return (f"Oops! We could not find any data found for the word '{self.input_word}'. "
+            return (f"Oops! We could not find any data for the word '{self.word}'. "
                     f"Please try again later.")
+
         try:
+            # Check if 'quotes' exist in the data
             quotes = self.input_word_data[1][0].get('quotes', [])
 
-            if not quotes:
-                return f"No examples for the word '{self.input_word}' were found."
-            return '<br><br>'.join(f"{i}. {re.sub(r'\{qword\}|\{/qword\}', '', quote['t'])}"
-                                   for i, quote in enumerate(quotes, 1)
-                                   if isinstance(quote, dict) and 't' in quote)
+            if quotes:  # If quotes exist, process them
+                return '<br><br>'.join(f"{i}. {re.sub(r'\{qword\}|\{/qword\}', '', quote['t'])}"
+                                       for i, quote in enumerate(quotes, 1)
+                                       if isinstance(quote, dict) and 't' in quote)
+
+            # If 'quotes' do not exist, check the 'def' section for 'vis' entries
+            def_section = self.input_word_data[1][0].get('def', [])
+            examples = []
+
+            if def_section:
+                # Traverse the def section for examples (usually in the 'vis' key)
+                for entry in def_section:
+                    # Navigate to the examples (if any) stored under 'vis'
+                    sense = entry.get('sseq', [[]])[0][0][1].get('dt', [])
+                    for d in sense:
+                        if d[0] == 'vis':  # 'vis' typically contains examples
+                            for vis_entry in d[1]:
+                                example_text = vis_entry.get('t', '')
+                                # Clean up the {qword} markers and format example
+                                cleaned_example = re.sub(r'\{wi\}|\{/wi\}', '', example_text)
+                                examples.append(cleaned_example)
+
+                # Format the examples for display
+                if examples:
+                    return '<br><br>'.join(f"{i}. {example}" for i, example in enumerate(examples, 1))
+
+            return f"No examples for the word '{self.word}' were found."
 
         except Exception as e:
             # Handle any other unexpected errors
-            return self.da.handle_errors(e)
+            return f"Oops! An unexpected error occurred: {str(e)}. Please try again later."
 
     def show_etymology(self):
         """
          Method to retrieve and return the etymology data of the input word
          """
         if not self.input_word_data:
-            return (f"Oops! We could not find any data found for the word '{self.input_word}'. "
+            return (f"Oops! We could not find any data for the word '{self.word}'. "
                     f"Please try again later.")
         try:
             # Fetch the etymology data

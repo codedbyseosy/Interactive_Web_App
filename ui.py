@@ -31,7 +31,7 @@ class UI:
 
             da = DictionaryAPI()
 
-            wd = Word(input_word=input_word)
+            wd = Word(word=input_word)
 
             if not input_word.isalpha():
                 error_message = UI.display_error("Invalid word")

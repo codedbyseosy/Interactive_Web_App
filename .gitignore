@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment folder
+venv/
+
+# Draft folder containing intial drafts of code
+draft_files/
+
+
+
+# Environment variables file
+.env
+
+# Log files
+*.log
+
+# IDE-specific files (optional, depending on the IDE you're using)
+.vscode/
+.idea/
+*.swp
+
+# Operating system-specific files
+.DS_Store (for macOS)
+
+# Temporary or backup files
+*.tmp
+*.bak

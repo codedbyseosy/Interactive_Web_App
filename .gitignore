@@ -9,8 +9,6 @@ venv/
 # Draft folder containing intial drafts of code
 draft_files/
 
-
-
 # Environment variables file
 .env
 

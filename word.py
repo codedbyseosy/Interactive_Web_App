@@ -1,11 +1,9 @@
 import re
 from dictionaryapi import DictionaryAPI
 
-
 class Word:
     """
-    This class represents a word with attributes like
-    definition, synonyms, antonyms, etc.
+    This class represents a word with attributes like definition, synonyms, antonyms, etc.
     """
     def __init__(self, word):
         self.word = word  # Store the input word
@@ -156,7 +154,7 @@ class Word:
 
         except Exception as e:
             # Handle any other unexpected errors
-            return f"Oops! An unexpected error occurred: {str(e)}. Please try again later."
+            return self.da.handle_errors(e)
 
     def show_etymology(self):
         """

@@ -6,18 +6,16 @@ from flask_caching import Cache
 app = Flask(__name__, template_folder='templates')
 
 # Configure the cache
-app.config['CACHE_TYPE'] = 'redis'
-app.config['CACHE_REDIS_HOST'] = 'localhost'
-app.config['CACHE_REDIS_PORT'] = 6379
-app.config['CACHE_REDIS_DB'] = 0
-app.config['CACHE_REDIS_URL'] = "redis://localhost:6379/0"
-app.config['CACHE_DEFAULT_TIMEOUT'] = 300
+app.config['CACHE_TYPE'] = 'simple'  # You can use 'redis', 'filesystem', etc.
+app.config['CACHE_DEFAULT_TIMEOUT'] = 300  # Cache timeout (in seconds)
 cache = Cache(app)
+
 
 class UI:
     """
     This class handles the user interface and interactions.
     """
+
     @app.route('/', methods=['GET', 'POST'])
     def home():
         input_word = ""  # Holds the user-inputted word
@@ -28,49 +26,76 @@ class UI:
         pronunciation = None
         examples = None
         etymology = None
-        error_message = None
+        error_message = ""
 
         if request.method == 'POST':
-            try:
-                input_word = request.form['input_word']  # Get word from the form
+            input_word = request.form['input_word'].strip()  # Get word from the form
 
-                if not input_word.isalpha():
-                    error_message = UI.display_error("invalid word")
+            if not input_word.isalpha():
+                error_message = UI.display_error("invalid word")
+                return render_template('dictionary_app.html', error_message=error_message)
+
+            action = request.form['action']  # Check which button was pressed
+
+            # Use cache to store API data for the word
+            cached_data = cache.get(input_word)
+            if cached_data:
+                wd = cached_data  # If data is found in the cache, use it
+            else:
+                wd = Word(word=input_word)  # Otherwise, create a new Word object
+
+                if wd.input_word_data is None:  # Check if the word data is valid
+                    error_message = f"No data available for '{input_word}'"
                     return render_template('dictionary_app.html', error_message=error_message)
 
-                action = request.form['action']  # Check which button was pressed
+                cache.set(input_word, wd)  # Cache the valid word object
 
-                # Use cache to store API data for the word
-                cached_data = cache.get(input_word)
-                if cached_data:
-                    # If data is found in the cache, use it
-                    wd = cached_data
-                else:
-                    # Otherwise, create a new Word object and cache the result
-                    wd = Word(word=input_word)
-                    cache.set(input_word, wd)  # Cache the word object
-
+            try:
                 # Perform actions based on the button pressed
                 if action == 'definition':
                     definition = wd.get_definition()
+                    if not definition or 'Oops' in definition:
+                        error_message = definition if definition else "Error fetching definition."
+                        definition = None
 
                 elif action == 'pos':
                     part_of_speech = wd.show_part_of_speech()
+                    if not part_of_speech or 'Oops' in part_of_speech:
+                        error_message = part_of_speech if part_of_speech else "Error fetching part of speech."
+                        part_of_speech = None
 
                 elif action == 'synonyms':
                     synonyms = wd.get_synonyms()
+                    if not synonyms or 'Oops' in synonyms:
+                        error_message = synonyms if synonyms else "Error fetching synonyms."
+                        synonyms = None
 
                 elif action == 'antonyms':
                     antonyms = wd.get_antonyms()
+                    if not antonyms or 'Oops' in antonyms:
+                        error_message = antonyms if antonyms else "Error fetching antonyms."
+                        antonyms = None
 
                 elif action == 'pronunciation':
                     pronunciation = wd.get_pronunciation()
+                    if not pronunciation or 'Oops' in pronunciation:
+                        error_message = pronunciation if pronunciation else "Error fetching pronunciation."
+                        pronunciation = None
 
                 elif action == 'examples':
                     examples = wd.provide_examples()
+                    if not examples or 'Oops' in examples:
+                        error_message = examples if examples else "Error fetching examples."
+                        examples = None
 
                 elif action == 'etymology':
                     etymology = wd.show_etymology()
+                    if not etymology or 'Oops' in etymology:
+                        error_message = etymology if etymology else "Error fetching etymology."
+                        etymology = None
+
+            except Exception as e:
+                error_message = f"Error: {str(e)}"  # Set the error message here
 
         return render_template('dictionary_app.html', input_word=input_word,
                                definition=definition, part_of_speech=part_of_speech,
@@ -79,7 +104,8 @@ class UI:
 
     @staticmethod
     def display_error(message):
-        return f"Oops! It looks like you have entered an {message}. Please enter a valid word using alphabetic characters."
+        return (f"Oops! It looks like you have entered an {message}. "
+                f"Please enter a valid word using alphabetic characters.")
 
 
 if __name__ == '__main__':

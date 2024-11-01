@@ -24,7 +24,7 @@
             background-color: lavenderblush; /* Soft pink background */
             margin: 15% auto; /* Center the modal vertically */
             padding: 20px; /* Padding inside modal */
-            border: 2px solid deeppink; /* Hotpink border */
+            border: 4px solid deeppink; /* Hotpink border */
             border-radius: 25px; /* Rounded edges */
             width: 80%; /* Responsive width */
             max-width: 500px; /* Maximum width */
@@ -41,7 +41,8 @@
         }
 
         .modal-content p {
-            font-family: 'Merriweather', serif; /* Font for paragraphs */
+            /*font-family: 'Merriweather', serif; Font for paragraphs */
+            font-family: 'Lora', serif; /* Elegant serif font */
             color: darkslategray; /* Text color */
             font-size: 1.2rem; /* Font size */
         }
@@ -104,7 +105,7 @@
 </head>
 <body style="background-color: mistyrose;">
     <h1 style="text-align: center;">Interactive Dictionary Web App</h1>
-    <p style="font-size: 20px; text-align: center;">
+    <p id=heading_paragraph style="font-size: 20px; text-align: center;">
         Search for any word and find its definition, synonyms, antonyms, as well as examples for over 275,000 words.
     </p>
 
@@ -141,6 +142,7 @@
             <p id="modal-error-message">{{ error_message }}</p> <!-- Display error message -->
         </div>
     </div>
+
 
     <!-- Display results after form submission -->
     <div>
@@ -190,6 +192,8 @@
         // If there's an error message, show the modal
         if (errorMessage) {
             modal.style.display = "block";  // Show the error modal with the message
+        } else {
+            modal.style.display = "none";  // Hide the modal if there's no error
         }
 
         // Close modal when 'x' is clicked

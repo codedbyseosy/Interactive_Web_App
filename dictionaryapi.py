@@ -41,20 +41,17 @@ class DictionaryAPI:
 
         except TypeError:
             # Handle unexpected data types in the response
-            error_message = ("Oops! We received unexpected data from the dictionary service. "
-                             "Please try again later or check the word you're looking up.")
+            error_message = "Oops! We received unexpected data from the dictionary service. Please try again later or check the word you're looking up."
             return self.handle_errors(error_message)
 
         except requests.exceptions.Timeout:
             # Handle timeout errors
-            error_message = ("It looks like the request took too long. "
-                             "Please check your internet connection and try again later.")
+            error_message = "It looks like the request took too long. Please check your internet connection and try again later."
             return self.handle_errors(error_message)
 
         except requests.exceptions.ConnectionError:
             # Handle connection errors
-            error_message = ("We're having trouble connecting to the dictionary service. "
-                             "Please check your internet connection and try again later.")
+            error_message = "We're having trouble connecting to the dictionary service. Please check your internet connection and try again later."
             return self.handle_errors(error_message)
 
         except requests.exceptions.RequestException as e:
@@ -62,8 +59,8 @@ class DictionaryAPI:
             return self.handle_errors(e)
 
     @staticmethod
-    def handle_errors(error):
+    def handle_errors(e):
         """
-        Handles any API-related errors by returning a formatted error message.
+        Handle and return a formatted error message.
         """
-        return error
+        return f"Error: {str(e)}"

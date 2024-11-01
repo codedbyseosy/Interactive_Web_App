@@ -1,5 +1,82 @@
+/* Body styles */
+body {
+    justify-content: center; /* Center content */
+    align-items: center; /* Center items */
+    /*background: linear-gradient(135deg, mistyrose, rgb(210, 240, 249), lavenderblush); Gradient background */
+    /*background: linear-gradient(135deg, #E0FFFF, #AFEEEE, #87CEFA);*/
+    /*background: linear-gradient(to right, #BFEFFF, #B0C4DE, #E6E6FA);*/
+    /*background: linear-gradient(to right, #E1C6E7, #FFF8E1, #D1E7D6);*/
+    /*background: linear-gradient(to right, #E1B7E3, #FFF5E1, #FFE4E1);*/
+    /*background: linear-gradient(to right,#E5D0E3, #FFF7C0, #FAD5D8);*/
+    /*background: linear-gradient(to right,#E6E6FA, #D8BFD8, #9370DB);*/
+    /*background: linear-gradient(to right, #E6E6FA, #F0FFF0, #D3D3D3);*/
+    background: linear-gradient(to right, #FFB6C1, #E0BBE4, #D9EAD3);
+
+    margin: 0; /* No margin */
+    padding: 0; /* No padding */
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Allow vertical scrolling */
+}
+
+
+/* Smooth scrolling behavior */
+html {
+    scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+
+/* Styles for main heading */
+h1 {
+    font-size: 3rem; /* Size of main heading */
+    font-family: 'Pacifico', cursive; /* Cursive font for heading */
+    color: deeppink; /* Text color */
+    text-shadow: 2px 2px 3px hotpink; /* Shadow for text */
+    text-align: center; /* Center text */
+    margin: 20px; /* Margin around heading */
+    transition: transform 0.2s ease-in-out; /* Transition for scaling effect */
+}
+
+
+/* Hover effect for main heading */
+h1:hover {
+    transform: scale(1.05); /* Scale up on hover */
+}
+
+
+#heading_paragraph {
+    font-size: 24px; /* Font size */
+    /*font-family: 'Merriweather', serif; Font for paragraphs */
+    font-family: 'Lora', serif; /* Elegant serif font */
+}
+
+
+/* Style for the form */
+form {
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.1) 75%, rgba(255, 255, 255, 0.1));
+    background-size: 10px 10px; /* Adjust size for texture */
+    background-color: white; /* Background color for the form */
+    border-radius: 30px; /* Rounded corners */
+    width: 30%; /* Width of the form */
+    height: 300px; /* Height of the form */
+    margin: 0 auto; /* Center the form */
+    padding: 60px; /* Padding inside the form */
+    justify-content: center; /* Center content */
+    text-align: center; /* Center text */
+    box-shadow: 0px 10px 40px rgba(255, 182, 193, 0.6); /* Soft shadow */
+}
+
+
+/* Style for labels */
+label {
+    /* font-family: 'Merriweather', serif; */ /* Commented out for Pacifico font */
+    font-family: 'Pacifico', cursive; /* Cursive font for labels */
+}
+
+
 /* Style for search input field */
 input[type="search"] {
+    color: darkslategray;
     font-size: 20px; /* Font size for the input */
     font-family: 'Merriweather', serif; /* Font family for the input */
     border-radius: 25px; /* Rounded corners */
@@ -13,6 +90,7 @@ input[type="search"] {
     transition: box-shadow 0.2s ease-in-out; /* Transition effect on focus */
 }
 
+
 /* Styles for input field on focus */
 input[type="search"]:focus {
     outline: none; /* Remove default outline */
@@ -20,6 +98,7 @@ input[type="search"]:focus {
     border: 1px solid deeppink; /* Darker border on focus */
     animation: bounce 0.4s ease; /* Bounce animation on focus */
 }
+
 
 /* Bounce animation keyframes */
 @keyframes bounce {
@@ -31,24 +110,6 @@ input[type="search"]:focus {
     }
 }
 
-/* Style for the form */
-form {
-    background-color: white; /* Background color for the form */
-    border-radius: 25px; /* Rounded corners */
-    width: 30%; /* Width of the form */
-    height: 300px; /* Height of the form */
-    margin: 0 auto; /* Center the form */
-    padding: 80px; /* Padding inside the form */
-    justify-content: center; /* Center content */
-    text-align: center; /* Center text */
-    box-shadow: 0px 10px 40px rgba(255, 182, 193, 0.6); /* Soft shadow */
-}
-
-/* Style for labels */
-label {
-    /* font-family: 'Merriweather', serif; */ /* Commented out for Pacifico font */
-    font-family: 'Pacifico', cursive; /* Cursive font for labels */
-}
 
 /* Style for action buttons */
 .edit_button {
@@ -72,12 +133,14 @@ label {
     background: linear-gradient(135deg, hotpink, deeppink); /* Gradient background */
 }
 
+
 /* Styles for button on hover */
 .edit_button:hover {
     box-shadow: 0px 6px 25px rgba(255, 105, 180, 0.6); /* Shadow on hover */
     background: linear-gradient(135deg, deeppink, hotpink); /* Change gradient on hover */
     transform: scale(1.08); /* Scale up on hover */
 }
+
 
 /* Button groups styling */
 #button_groups {
@@ -88,6 +151,7 @@ label {
     justify-content: space-evenly; /* Evenly space buttons */
 }
 
+
 /* Style for strong text */
 strong {
     font-weight: bold; /* Bold text */
@@ -96,40 +160,6 @@ strong {
     text-align: center; /* Center text */
 }
 
-/* Smooth scrolling behavior */
-html {
-    scroll-behavior: smooth; /* Smooth scrolling */
-}
-
-/* Body styles */
-body {
-    justify-content: center; /* Center content */
-    align-items: center; /* Center items */
-    background: linear-gradient(135deg, mistyrose, rgb(210, 240, 249), lavenderblush); /* Gradient background */
-    /*background: linear-gradient(135deg, #E0FFFF, #AFEEEE, #87CEFA);*/
-    /*background: linear-gradient(to right, #BFEFFF, #B0C4DE, #E6E6FA);*/
-    font-family: 'Arial', sans-serif; /* Font for body */
-    margin: 0; /* No margin */
-    padding: 0; /* No padding */
-    height: 100vh; /* Full viewport height */
-    overflow-y: auto; /* Allow vertical scrolling */
-}
-
-/* Styles for main heading */
-h1 {
-    font-size: 3rem; /* Size of main heading */
-    font-family: 'Pacifico', cursive; /* Cursive font for heading */
-    color: deeppink; /* Text color */
-    text-shadow: 2px 2px 3px hotpink; /* Shadow for text */
-    text-align: center; /* Center text */
-    margin: 20px; /* Margin around heading */
-    transition: transform 0.2s ease-in-out; /* Transition for scaling effect */
-}
-
-/* Hover effect for main heading */
-h1:hover {
-    transform: scale(1.05); /* Scale up on hover */
-}
 
 /* Styles for secondary headings */
 h2 {
@@ -140,18 +170,22 @@ h2 {
     font-size: 1.5rem; /* Font size */
 }
 
+
 /* Styles for paragraphs */
 p {
     color: darkslategray; /* Text color */
     font-size: 18px; /* Font size */
-    font-family: 'Merriweather', serif; /* Font for paragraphs */
+    /*font-family: 'Merriweather', serif; Font for paragraphs */
+    font-family: 'Lora', serif; /* Elegant serif font */
+
 }
+
 
 /* Output styles */
 .outputs {
     text-align: center; /* Center text */
     background: lavenderblush; /* Background color */
-    border: 2px solid hotpink; /* Set border properties*/
+    border: 4px solid hotpink; /* Set border properties*/
     font-size: 1.2rem; /* Font size */
     padding: 15px; /* Padding inside output */
     border-radius: 20px; /* Rounded corners */
